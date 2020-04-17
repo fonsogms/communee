@@ -1,8 +1,14 @@
 module.exports.user = {
   Query: {
-    user: () => {
+    user: (parent, { name, email }, context, info) => {
       console.log("alfonso");
-      return { name: "hello", email: "testingcles" };
+      return { name, email };
+    },
+  },
+  Mutation: {
+    user: (parent, { name, email }, context, info) => {
+      console.log("alfonso");
+      return { name, email };
     },
   },
 };
