@@ -1,12 +1,18 @@
 const express = require("express");
 app = express();
 const { ApolloServer } = require("apollo-server-express");
-const cors = require("cors");
 //environment setup
+
 const dotenv = require("dotenv");
+
 dotenv.config();
 
+//connecting to the database
+const connection = require("./DB/index");
+connection();
+
 //Cors setup
+const cors = require("cors");
 app.use(cors());
 
 app.use(express.json());
@@ -20,7 +26,7 @@ const server = new ApolloServer({
   resolvers,
   context: () => {},
 });
-
+server.applyMiddleware({ app, path: "/graphql" });
 //comentario random
 app.listen(process.env.PORT, () => {
   console.log(`Listening on port ${process.env.PORT}`);

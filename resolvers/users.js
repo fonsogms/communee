@@ -1,7 +1,7 @@
 module.exports.user = {
   Query: {
     user: () => {
-      return "Hello";
+      return { name: "hello", email: "testingcles" };
     },
   },
 };

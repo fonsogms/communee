@@ -5,7 +5,6 @@ module.exports.user = gql`
   }
 
   type User {
-    id: ID!
     name: String!
     email: String!
   }
