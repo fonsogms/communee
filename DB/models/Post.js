@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const givingSchema = new mongoose.Schema(
+const postSchema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -19,4 +19,4 @@ const givingSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Giving", givingSchema);
+module.exports = mongoose.model("Post", postSchema);

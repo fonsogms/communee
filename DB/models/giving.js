@@ -11,7 +11,7 @@ const givingSchema = new mongoose.Schema(
     },
     type: {
       enum: ["Item", "Service"],
-      required: true,
+      // required: true,
     },
     state: {
       enum: ["Need", "Offer"],

@@ -25,6 +25,12 @@ const communitySchema = new mongoose.Schema(
         reference: "Giving",
       },
     ],
+    news: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        reference: "Post",
+      },
+    ],
   },
 
   { timestamps: true }
