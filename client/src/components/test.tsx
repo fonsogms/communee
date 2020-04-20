@@ -18,7 +18,16 @@ const Test = () => {
     };
   }
 
-  const [input, setInput] = useState({ name: "", email: "", data: {} });
+  const [input, setInput] = useState({
+    name: "",
+    email: "",
+    data: {
+      user: {
+        name: String,
+        email: String,
+      },
+    },
+  });
   const changeValue = ({ target: { name, value } }: textInput): void => {
     setInput({ ...input, [name]: value });
   };
@@ -63,32 +72,3 @@ const Test = () => {
 };
 
 export default Test;
-
-/* export default class test extends Component {
-  state = {
-  
-  };
-  
-  render() {
-    console.log(this.state);
-    console.log("hello");
-    return (
-      <div>
-        <input
-          type="text"
-          name="name"
-          onChange={this.changeValue}
-          value={this.state.name}
-        />
-        <input
-          type="text"
-          name="email"
-          onChange={this.changeValue}
-          value={this.state.email}
-        />
-      
-      </div>
-    );
-  }
-}
- */
