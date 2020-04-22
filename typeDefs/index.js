@@ -1,6 +1,8 @@
-const { user } = require("./users");
+const { user } = require("./user");
+const { community } = require("./community");
 const { gql } = require("apollo-server-express");
 const index = gql`
+  scalar Date
   type Query {
     _: String
   }
@@ -9,4 +11,4 @@ const index = gql`
   }
 `;
 
-module.exports = [index, user];
+module.exports = [index, user, community];
