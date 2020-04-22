@@ -4,19 +4,19 @@ module.exports.community = gql`
     community(id: ID): Community!
   }
   extend type Mutation {
-    createCommunity(userInput: CommunityInput): Community
+    createCommunity(userInput: createCommunity): Community
   }
   type Community {
-    name: String!
-    email: String!
-    password: String!
-    profilePic: String!
+    name: String
+    address: String!
+    tenants: [User]!
+    events: [Event]
+    items: [Giving]
+    posts: [Post]!
     Date: Date!
   }
-  input CommunityInput {
-    name: String!
-    email: String!
-    password: String!
-    profilePic: String!
+  input createCommunity {
+    name: String
+    address: String!
   }
 `;

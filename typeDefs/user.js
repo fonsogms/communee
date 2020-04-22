@@ -1,27 +1,36 @@
 const { gql } = require("apollo-server-express");
 module.exports.user = gql`
   extend type Query {
-    user(name: String!, email: String!): User!
+    user(name: String, email: String, id: ID): User!
   }
   extend type Mutation {
     user(name: String!, email: String!): User!
-    createUser(userInput: userProfile): User
-    updateUser(userInput: userProfile): User
+    createUser(userInput: createUser): User
+    updateUser(userInput: updateUser): User
   }
-  input userProfile {
+  input createUser {
     name: String!
     email: String!
     password: String!
-    profilePic: String!
-    community: [CommunityInput!]
+    profilePic: String
+    community: [ID]
   }
-  type User {
+  input updateUser {
+    id: ID!
     name: String!
     email: String!
     password: String!
-    profilePic: String!
-    community: [Community]
+    profilePic: String
+    community: [ID!]
+  }
 
+  type User {
+    id: ID!
+    name: String!
+    email: String!
+    password: String!
+    profilePic: String
+    community: [Community]
     Date: Date!
   }
 `;

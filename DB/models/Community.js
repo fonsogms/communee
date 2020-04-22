@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
 const communitySchema = new mongoose.Schema(
   {
+    name: {
+      type: String,
+    },
     address: {
       type: String,
       required: true,
@@ -25,7 +28,7 @@ const communitySchema = new mongoose.Schema(
         reference: "Giving",
       },
     ],
-    news: [
+    post: [
       {
         type: mongoose.Schema.Types.ObjectId,
         reference: "Post",
