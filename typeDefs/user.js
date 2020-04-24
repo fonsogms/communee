@@ -11,17 +11,17 @@ module.exports.user = gql`
   input createUser {
     name: String!
     email: String!
+    address: String!
     password: String!
     profilePic: String
-    community: [ID]
   }
   input updateUser {
     id: ID!
-    name: String!
-    email: String!
-    password: String!
+    name: String
+    email: String
+    password: String
     profilePic: String
-    community: [ID!]
+    community: [ID]
   }
 
   type User {
@@ -30,8 +30,8 @@ module.exports.user = gql`
     email: String!
     password: String!
     profilePic: String
-    community: [Community]
-    Date: Date!
+    community: [ID]
+    Date: Date
   }
 `;
 

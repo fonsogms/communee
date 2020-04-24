@@ -10,7 +10,8 @@ let getChatsQuery = (name: string, email: string): string => {
   `;
 };
 
-const Test = () => {
+const Test = (props) => {
+  console.log(props);
   interface textInput {
     target: {
       name: string;
@@ -44,9 +45,8 @@ const Test = () => {
     const { data: object } = await body.json();
     setInput({ ...input, data: object });
   };
-  console.log(input);
   return (
-    <div>
+    <React.Fragment>
       <input
         type="text"
         name="name"
@@ -67,7 +67,7 @@ const Test = () => {
           <h1>{input.data.user.email}</h1>
         </React.Fragment>
       )}
-    </div>
+    </React.Fragment>
   );
 };
 

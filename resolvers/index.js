@@ -1,3 +1,3 @@
 const { user } = require("./users");
-
-module.exports = [user];
+const { community } = require("./community");
+module.exports = [user, community];
