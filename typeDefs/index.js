@@ -3,6 +3,7 @@ const { community } = require("./community");
 const { giving } = require("./giving");
 const { event } = require("./event");
 const { post } = require("./post");
+const { apis } = require("./extApis");
 const { gql } = require("apollo-server-express");
 const index = gql`
   scalar Date
@@ -14,4 +15,4 @@ const index = gql`
   }
 `;
 
-module.exports = [index, user, post, community, event, giving];
+module.exports = [index, user, post, community, event, giving, apis];

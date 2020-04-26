@@ -28,6 +28,7 @@ const server = new ApolloServer({
 });
 server.applyMiddleware({ app, path: "/graphql" });
 //comentario random
+
 app.listen(process.env.PORT, () => {
   console.log(`Listening on port ${process.env.PORT}`);
 });

@@ -1,3 +1,4 @@
 const { user } = require("./users");
 const { community } = require("./community");
-module.exports = [user, community];
+const { apis } = require("./extApis");
+module.exports = [user, community, apis];
