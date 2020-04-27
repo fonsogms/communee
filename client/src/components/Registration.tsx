@@ -1,12 +1,13 @@
 import React from "react";
 import { useState } from "react";
-
-let getChatsQuery = (
+import Mapbox from "./Mapbox";
+import fetchInfo from "../fetchInfo";
+const createUserMutation = (
   name: string,
   email: string,
-  address: string,
   password: string,
-  profilePic: string
+  profilePic: string,
+  community: string
 ): string => {
   return `
      mutation {
@@ -14,45 +15,73 @@ let getChatsQuery = (
             {
                 name: "${name}",
                 email: "${email}",
-                address:"${address}",
 
                 password: "${password}",
                 profilePic: "${profilePic}",
+                community:"${community}"
                 
             }){
              name
+             community
+             email
+
+             
          }
      }
     `;
 };
+
+const createCommunityMutation = (address: string): string => {
+  return `
+mutation{
+  createCommunity(userInput:{
+     name:"Change the community name",
+    address:"${address}"
+  })
+  {
+    
+    id
+    
+  }
+  
+  
+}
+`;
+};
+
 const Registration = () => {
   const [userInfo, setUser] = useState({
     name: " ",
     email: " ",
-    address: " ",
 
     password: " ",
-    profile: " ",
+    profilePic: " ",
   });
+
+  const [address, setAddressInput] = useState("");
   console.log(Object.values(userInfo!));
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(e.target);
     let values: Array<string> = Object.values(userInfo!);
-    console.log(values.length);
-    console.log(...values);
-    const body = await fetch(`http://localhost:4000/graphql`, {
+
+    const {
+      createCommunity: { id },
+    } = await fetchInfo(createCommunityMutation, [address]);
+    values.push(id);
+    const data2 = await fetchInfo(createUserMutation, [...values]);
+    console.log(data2);
+    /*  const body = await fetch(`http://localhost:4000/graphql`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         // @ts-ignore
-        query: getChatsQuery(...values),
+        query: createUserMutation(...values),
       }),
     });
     const { data } = await body.json();
-    console.log(data);
+    console.log(data); */
   };
   const changeInput = (input: string, newValue: string): void => {
     setUser({ ...userInfo, [input]: newValue });
@@ -60,23 +89,33 @@ const Registration = () => {
 
   return (
     <div>
-      Hello
-      <form onSubmit={handleSubmit}>
-        {Object.keys(userInfo).map((elem) => {
-          return (
-            <React.Fragment>
-              <div key={elem}>
-                <label htmlFor="">{elem} </label>
-                <input
-                  type="text"
-                  onChange={(e) => changeInput(elem, e.target.value)}
-                  name={elem}
-                  value={userInfo[elem]}
-                />
-              </div>
-            </React.Fragment>
-          );
-        })}
+      <form className="registration" onSubmit={handleSubmit}>
+        <div className="input">
+          <div className="userInfo">
+            {Object.keys(userInfo).map((elem) => {
+              return (
+                <React.Fragment>
+                  <div key={elem}>
+                    <div>
+                      <label htmlFor="">
+                        {elem[0].toLocaleUpperCase() + elem.slice(1)}
+                      </label>
+                    </div>
+                    <div>
+                      <input
+                        type="text"
+                        onChange={(e) => changeInput(elem, e.target.value)}
+                        name={elem}
+                        value={userInfo[elem]}
+                      />
+                    </div>
+                  </div>
+                </React.Fragment>
+              );
+            })}
+          </div>
+          <Mapbox setAddressInput={setAddressInput}></Mapbox>
+        </div>
         <button type="submit">Submit</button>
       </form>
     </div>

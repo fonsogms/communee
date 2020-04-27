@@ -10,29 +10,14 @@ module.exports.user = {
   Mutation: {
     createUser: async (parent, { userInput }, context, info) => {
       try {
+        console.log("this is userInput", userInput);
         const user = await User.create({ ...userInput });
         if (user) {
-          user.address = userInput.address;
+          console.log("this is user", user.community);
           return user;
         } else {
           throw new Error("There was a prooblem creating user");
         }
-      } catch (error) {
-        console.log(error);
-        throw error;
-      }
-    },
-  },
-  User: {
-    community: async ({ address }, args, context, info) => {
-      try {
-        let community = await Community.findOne({ address: address });
-        console.log(community);
-        if (!community) {
-          community = await Community.create({ address });
-          return [community._id];
-        }
-        return [community._id];
       } catch (error) {
         console.log(error);
         throw error;

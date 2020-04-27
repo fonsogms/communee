@@ -24,8 +24,8 @@ const Test = (props) => {
     email: "",
     data: {
       user: {
-        name: String,
-        email: String,
+        name: "",
+        email: "",
       },
     },
   });
@@ -62,10 +62,10 @@ const Test = (props) => {
       <button onClick={getInfo}>Press it bro</button>
 
       {input.data.user && (
-        <React.Fragment>
+        <div>
           <h1>{input.data.user.name}</h1>
           <h1>{input.data.user.email}</h1>
-        </React.Fragment>
+        </div>
       )}
     </React.Fragment>
   );

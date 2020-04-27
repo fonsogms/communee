@@ -1,14 +1,110 @@
-import React, { Component } from "react";
-import ReactMapGL from "react-map-gl";
-
-let api: string =
-  "https://api.mapbox.com/geocoding/v5/mapbox.places/oderberger.json?types=address&access_token=pk.eyJ1IjoiZm9uc29nbXMiLCJhIjoiY2swbWRsZWo3MTV6bTNkcW9vc29ybDZyMSJ9.EiT_I5moTDeyh3CM_Uc5CQ";
-export default class Mapbox extends Component {
-  render() {
-    return (
-      <div>
-        <ReactMapGL></ReactMapGL>
-      </div>
-    );
+import React, { useState, useEffect } from "react";
+import Map from "./Map";
+const getQuery = (address: string): string => {
+  return `
+  
+  {
+    findAddress(address:"${address}"){
+      place_name
+      center
+    }
   }
-}
+  `;
+};
+
+const Mapbox = (props) => {
+  interface results {
+    place_name: string;
+    center: Array<number>;
+  }
+  let mapboxResults: results = {
+    place_name: "",
+    center: [30, 10],
+  };
+  interface firstViewInt {
+    longitude: number;
+    latitude: number;
+    width: string;
+    height: string;
+    zoom: number;
+  }
+  let firstView: firstViewInt = {
+    longitude: 2.090591,
+    latitude: 41.563046,
+    width: "600px",
+    height: "600px",
+    zoom: 15,
+  };
+  const [marker, setMarker] = useState({
+    longitude: firstView.longitude,
+    latitude: firstView.latitude,
+  });
+  const [viewport, setViewport] = useState(firstView);
+  const [input, setInput] = useState("");
+  const [addresses, setAddress] = useState([mapboxResults]);
+  const changeInput = (e): void => {
+    setInput(e.target.value);
+    handleChange(e.target.value);
+  };
+
+  const handleChange = async (val): Promise<void> => {
+    const value: string = val;
+    const body = await fetch(`http://localhost:4000/graphql`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: getQuery(value),
+      }),
+    });
+    const {
+      data: { findAddress },
+    } = await body.json();
+    if (findAddress) {
+      setAddress(findAddress);
+    } else {
+      setAddress([]);
+    }
+  };
+
+  const pickAdress = (index: number, name: string): void => {
+    let latitude = addresses[index].center[1];
+    let longitude = addresses[index].center[0];
+    let data = { ...viewport, latitude, longitude };
+    setMarker({ latitude, longitude });
+    setViewport(data);
+    setInput(name);
+    props.setAddressInput(name);
+  };
+
+  useEffect(() => {
+    setAddress([]);
+  }, [marker]);
+  return (
+    <div>
+      <div className="addressInput">
+        <label>Write your address</label>{" "}
+        <div>
+          {" "}
+          <input type="text" onChange={changeInput} value={input} />
+        </div>
+        {addresses.length <= 1
+          ? null
+          : addresses.map((elem, index) => {
+              return (
+                <label
+                  key={index}
+                  onClick={() => pickAdress(index, elem.place_name)}
+                >
+                  {elem.place_name}
+                </label>
+              );
+            })}
+      </div>
+      <Map viewport={viewport} setViewport={setViewport} marker={marker}></Map>
+    </div>
+  );
+};
+
+export default Mapbox;

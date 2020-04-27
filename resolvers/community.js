@@ -12,11 +12,12 @@ module.exports.community = {
     ) => {
       try {
         console.log("something?");
-        const community = await Community.create({ name, address });
-        console.log("resultado", community);
+        let community = await Community.findOne({ address: address });
+        console.log("we find this community", community);
         if (!community) {
-          throw new Error("Community already exist");
+          community = await Community.create({ name, address });
         }
+        console.log("we are sending this community", community);
         return community;
       } catch (error) {
         console.log(error);

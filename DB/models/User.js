@@ -17,12 +17,8 @@ const userSchema = new mongoose.Schema(
       type: String,
     },
     community: {
-      type: Array,
-      items: {
-        type: mongoose.Schema.Types.ObjectId,
-        reference: "Community",
-      },
-      maxItems: 2,
+      type: mongoose.Schema.Types.ObjectId,
+      reference: "Community",
     },
 
     /*  complains: [

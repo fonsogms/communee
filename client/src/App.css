@@ -9,3 +9,24 @@
 .button button {
   margin: 10px;
 }
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: space-between;
+  margin-left: 10px;
+}
+.registration {
+  display: flex;
+  flex-direction: column;
+}
+.input {
+  display: flex;
+  justify-content: space-between;
+}
+.addressInput {
+  display: flex;
+  flex-direction: column;
+}
+.map {
+  margin-top: 10px;
+}
