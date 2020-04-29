@@ -1,6 +1,7 @@
 const User = require("../DB/models/User");
 const Community = require("../DB/models/Community");
-
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 module.exports.user = {
   Query: {
     user: (parent, { name, email }, context, info) => {
@@ -11,7 +12,12 @@ module.exports.user = {
     createUser: async (parent, { userInput }, context, info) => {
       try {
         console.log("this is userInput", userInput);
-        const user = await User.create({ ...userInput });
+        const hashedPassword = await bcrypt.hash(userInput.password, 12);
+
+        const user = await User.create({
+          ...userInput,
+          password: hashedPassword,
+        });
         if (user) {
           console.log("this is user", user.community);
           return user;

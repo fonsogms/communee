@@ -68,8 +68,8 @@ const Registration = () => {
       createCommunity: { id },
     } = await fetchInfo(createCommunityMutation, [address]);
     values.push(id);
-    const data2 = await fetchInfo(createUserMutation, [...values]);
-    console.log(data2);
+    const data: Promise<any> = await fetchInfo(createUserMutation, [...values]);
+    console.log(data);
     /*  const body = await fetch(`http://localhost:4000/graphql`, {
       method: "POST",
       headers: {
@@ -103,7 +103,7 @@ const Registration = () => {
                     </div>
                     <div>
                       <input
-                        type="text"
+                        type={elem === "password" ? "password" : "text"}
                         onChange={(e) => changeInput(elem, e.target.value)}
                         name={elem}
                         value={userInfo[elem]}
