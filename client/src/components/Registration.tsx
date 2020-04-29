@@ -24,7 +24,7 @@ const createUserMutation = (
              name
              community
              email
-
+              profilePic
              
          }
      }
@@ -57,9 +57,24 @@ const Registration = () => {
     password: " ",
     profilePic: " ",
   });
-
+  const [image, setImage] = useState("");
   const [address, setAddressInput] = useState("");
-  console.log(Object.values(userInfo!));
+  const uploadImage = async (e) => {
+    const files = e.target.files;
+    const data = new FormData();
+    data.append("file", files[0]);
+    data.append("upload_preset", "communee");
+    const res = await fetch(
+      "https://api.cloudinary.com/v1_1/dgktrtxjv/image/upload",
+      {
+        method: "POST",
+        body: data,
+      }
+    );
+    const file = await res.json();
+    console.log(file.secure_url);
+    setImage(file.secure_Url);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     let values: Array<string> = Object.values(userInfo!);
@@ -70,19 +85,8 @@ const Registration = () => {
     values.push(id);
     const data: Promise<any> = await fetchInfo(createUserMutation, [...values]);
     console.log(data);
-    /*  const body = await fetch(`http://localhost:4000/graphql`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        // @ts-ignore
-        query: createUserMutation(...values),
-      }),
-    });
-    const { data } = await body.json();
-    console.log(data); */
   };
+
   const changeInput = (input: string, newValue: string): void => {
     setUser({ ...userInfo, [input]: newValue });
   };
@@ -113,6 +117,10 @@ const Registration = () => {
                 </React.Fragment>
               );
             })}
+            <div>
+              <label htmlFor="">Profile Image</label>
+              <input type="file" onChange={uploadImage} />
+            </div>
           </div>
           <Mapbox setAddressInput={setAddressInput}></Mapbox>
         </div>
