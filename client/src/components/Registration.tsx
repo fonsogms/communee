@@ -24,7 +24,7 @@ const createUserMutation = (
              name
              community
              email
-              profilePic
+            profilePic
              
          }
      }
@@ -55,7 +55,6 @@ const Registration = () => {
     email: " ",
 
     password: " ",
-    profilePic: " ",
   });
   const [image, setImage] = useState("");
   const [address, setAddressInput] = useState("");
@@ -73,7 +72,7 @@ const Registration = () => {
     );
     const file = await res.json();
     console.log(file.secure_url);
-    setImage(file.secure_Url);
+    setImage(file.secure_url.toString());
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -82,6 +81,8 @@ const Registration = () => {
     const {
       createCommunity: { id },
     } = await fetchInfo(createCommunityMutation, [address]);
+    values.push(image);
+    console.log(values);
     values.push(id);
     const data: Promise<any> = await fetchInfo(createUserMutation, [...values]);
     console.log(data);
