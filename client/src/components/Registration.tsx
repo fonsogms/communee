@@ -125,6 +125,7 @@ const Registration = () => {
           </div>
           <Mapbox setAddressInput={setAddressInput}></Mapbox>
         </div>
+
         <button type="submit">Submit</button>
       </form>
     </div>
