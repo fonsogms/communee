@@ -75,6 +75,7 @@ const Mapbox = (props) => {
     setMarker({ latitude, longitude });
     setViewport(data);
     setInput(name);
+    props.setAddress(name);
   };
 
   useEffect(() => {
