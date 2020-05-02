@@ -49,14 +49,7 @@ mutation{
 `;
 };
 
-const Registration = () => {
-  const [userInfo, setUser] = useState({
-    name: " ",
-    email: " ",
-
-    password: " ",
-  });
-  const [image, setImage] = useState("");
+const ProfileForm = (props) => {
   const [address, setAddressInput] = useState("");
   const uploadImage = async (e) => {
     const files = e.target.files;
@@ -72,32 +65,19 @@ const Registration = () => {
     );
     const file = await res.json();
     console.log(file.secure_url);
-    setImage(file.secure_url.toString());
-  };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    let values: Array<string> = Object.values(userInfo!);
-
-    const {
-      createCommunity: { id },
-    } = await fetchInfo(createCommunityMutation, [address]);
-    values.push(image);
-    console.log(values);
-    values.push(id);
-    const data: Promise<any> = await fetchInfo(createUserMutation, [...values]);
-    console.log(data);
+    props.setImage(file.secure_url.toString());
   };
 
   const changeInput = (input: string, newValue: string): void => {
-    setUser({ ...userInfo, [input]: newValue });
+    props.setUser({ ...props.userInfo, [input]: newValue });
   };
 
   return (
     <div>
-      <form className="registration" onSubmit={handleSubmit}>
+      <form className="registration" onSubmit={props.handleSubmit}>
         <div className="input">
           <div className="userInfo">
-            {Object.keys(userInfo).map((elem) => {
+            {Object.keys(props.userInfo).map((elem) => {
               return (
                 <React.Fragment>
                   <div key={elem}>
@@ -111,7 +91,7 @@ const Registration = () => {
                         type={elem === "password" ? "password" : "text"}
                         onChange={(e) => changeInput(elem, e.target.value)}
                         name={elem}
-                        value={userInfo[elem]}
+                        value={props.userInfo[elem]}
                       />
                     </div>
                   </div>
@@ -123,7 +103,6 @@ const Registration = () => {
               <input type="file" onChange={uploadImage} />
             </div>
           </div>
-          <Mapbox setAddressInput={setAddressInput}></Mapbox>
         </div>
 
         <button type="submit">Submit</button>
@@ -132,4 +111,4 @@ const Registration = () => {
   );
 };
 
-export default Registration;
+export default ProfileForm;

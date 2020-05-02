@@ -1,6 +1,6 @@
 import React from "react";
 import Test from "./components/test";
-import Registration from "./components/Registration";
+import Registration from "./components/Registrations";
 import Navbar from "./components/Navbar";
 import "./App.css";
 import { Route, Switch } from "react-router-dom";
@@ -14,7 +14,7 @@ function App() {
 
       <Route
         exact
-        path="/registration"
+        path="/community"
         render={(props) => <Registration {...props} />}
       />
     </div>

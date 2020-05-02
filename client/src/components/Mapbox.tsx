@@ -31,8 +31,8 @@ const Mapbox = (props) => {
   let firstView: firstViewInt = {
     longitude: 2.090591,
     latitude: 41.563046,
-    width: "600px",
-    height: "600px",
+    width: "60vw",
+    height: "60vh",
     zoom: 15,
   };
   const [marker, setMarker] = useState({
@@ -75,7 +75,6 @@ const Mapbox = (props) => {
     setMarker({ latitude, longitude });
     setViewport(data);
     setInput(name);
-    props.setAddressInput(name);
   };
 
   useEffect(() => {
@@ -83,25 +82,36 @@ const Mapbox = (props) => {
   }, [marker]);
   return (
     <div>
-      <div className="addressInput">
-        <label>Write your address</label>{" "}
-        <div>
-          {" "}
-          <input type="text" onChange={changeInput} value={input} />
+      <div className="introduction">
+        <div className="searchBlock">
+          <h4>Find your address here:</h4>
+          <div className="searchBar">
+            <div>
+              <input
+                className="searchInput"
+                type="text"
+                onChange={changeInput}
+                value={input}
+              />
+            </div>
+            <ul>
+              {addresses.length <= 1
+                ? null
+                : addresses.map((elem, index) => {
+                    return (
+                      <li
+                        key={index}
+                        onClick={() => pickAdress(index, elem.place_name)}
+                      >
+                        {elem.place_name}
+                      </li>
+                    );
+                  })}
+            </ul>
+          </div>
         </div>
-        {addresses.length <= 1
-          ? null
-          : addresses.map((elem, index) => {
-              return (
-                <label
-                  key={index}
-                  onClick={() => pickAdress(index, elem.place_name)}
-                >
-                  {elem.place_name}
-                </label>
-              );
-            })}
       </div>
+      {}
       <Map viewport={viewport} setViewport={setViewport} marker={marker}></Map>
     </div>
   );
