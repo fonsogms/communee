@@ -39,6 +39,7 @@ const Mapbox = (props) => {
     longitude: firstView.longitude,
     latitude: firstView.latitude,
   });
+  const [isButton, setIsButton] = useState(false);
   const [viewport, setViewport] = useState(firstView);
   const [input, setInput] = useState("");
   const [addresses, setAddress] = useState([mapboxResults]);
@@ -76,43 +77,69 @@ const Mapbox = (props) => {
     setViewport(data);
     setInput(name);
     props.setAddress(name);
+    setIsButton(true);
   };
 
   useEffect(() => {
     setAddress([]);
   }, [marker]);
   return (
-    <div>
-      <div className="introduction">
-        <div className="searchBlock">
-          <h4>Find your address here:</h4>
-          <div className="searchBar">
-            <div>
-              <input
-                className="searchInput"
-                type="text"
-                onChange={changeInput}
-                value={input}
-              />
+    <div className="addressRegistration">
+      {!isButton ? (
+        <div className="introduction">
+          <div className="searchBlock">
+            <h4>Find your address here:</h4>
+            <div className="searchBar">
+              <div>
+                <input
+                  className="searchInput"
+                  type="text"
+                  onChange={changeInput}
+                  value={input}
+                />
+              </div>
+              <ul>
+                {addresses.length <= 1
+                  ? null
+                  : addresses.map((elem, index) => {
+                      return (
+                        <li
+                          key={index}
+                          onClick={() => pickAdress(index, elem.place_name)}
+                        >
+                          {elem.place_name}
+                        </li>
+                      );
+                    })}
+              </ul>
             </div>
-            <ul>
-              {addresses.length <= 1
-                ? null
-                : addresses.map((elem, index) => {
-                    return (
-                      <li
-                        key={index}
-                        onClick={() => pickAdress(index, elem.place_name)}
-                      >
-                        {elem.place_name}
-                      </li>
-                    );
-                  })}
-            </ul>
           </div>
         </div>
-      </div>
-      {}
+      ) : null}
+
+      {isButton ? (
+        <div className="confirmation">
+          <h3 style={{ textAlign: "center" }}>Is this the right address?</h3>
+          <h5 style={{ textAlign: "center" }}>{props.address}</h5>
+          <div>
+            <button
+              onClick={() => {
+                props.setShowMap(false);
+              }}
+            >
+              Yes
+            </button>
+            <button
+              onClick={() => {
+                setIsButton(false);
+              }}
+            >
+              No
+            </button>
+          </div>
+        </div>
+      ) : null}
+
       <Map viewport={viewport} setViewport={setViewport} marker={marker}></Map>
     </div>
   );

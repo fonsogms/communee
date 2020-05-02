@@ -50,8 +50,11 @@ mutation{
 };
 
 const ProfileForm = (props) => {
+  const [isLoading, setLoading] = useState(false);
+
   const [address, setAddressInput] = useState("");
   const uploadImage = async (e) => {
+    setLoading(true);
     const files = e.target.files;
     const data = new FormData();
     data.append("file", files[0]);
@@ -66,6 +69,7 @@ const ProfileForm = (props) => {
     const file = await res.json();
     console.log(file.secure_url);
     props.setImage(file.secure_url.toString());
+    setLoading(false);
   };
 
   const changeInput = (input: string, newValue: string): void => {
@@ -74,6 +78,8 @@ const ProfileForm = (props) => {
 
   return (
     <div>
+      <button onClick={() => props.setShowMap(true)}>Go back</button>
+
       <form className="registration" onSubmit={props.handleSubmit}>
         <div className="input">
           <div className="userInfo">
@@ -102,6 +108,12 @@ const ProfileForm = (props) => {
               <label htmlFor="">Profile Image</label>
               <input type="file" onChange={uploadImage} />
             </div>
+            {isLoading ? (
+              <img
+                id="loading"
+                src="http://api.ning.com/files/wdDZeipuIRydeFO-o32jfjGVFK5H7DEvHdNew3CRBmmFjYGmg-B1KXAU-R3CYL3tDZJSc67U*jacIZY9Fc*dCLMOOySBoVMA/circleloadinganimation.gif"
+              />
+            ) : null}
           </div>
         </div>
 

@@ -60,7 +60,6 @@ const Registration = () => {
 
   const [image, setImage] = useState("");
   const [address, setAddress] = useState("");
-  console.log(address);
   const handleSubmit = async (e) => {
     e.preventDefault();
     let values: Array<string> = Object.values(userInfo!);
@@ -73,12 +72,16 @@ const Registration = () => {
     const data: Promise<any> = await fetchInfo(createUserMutation, [...values]);
     console.log(data);
   };
-
+  console.log("this is the show map?", showMap);
   return (
     <div>
       <h2 className="title">Find your community and start sharing with them</h2>
       {showMap ? (
-        <Mapbox setAddress={setAddress}></Mapbox>
+        <Mapbox
+          setAddress={setAddress}
+          setShowMap={setShowMap}
+          address={address}
+        ></Mapbox>
       ) : (
         <ProfileForm
           setUser={setUser}
