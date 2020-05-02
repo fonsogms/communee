@@ -29,5 +29,22 @@ module.exports.user = {
         throw error;
       }
     },
+    login: async (parent, { email, password }, context) => {
+      try {
+        const user = await User.findOne({ email });
+        if (!user) {
+          throw new Error("user not found :(");
+        }
+
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+          throw new Error("Wrong password :(");
+        }
+        return user;
+      } catch (err) {
+        console.log(err);
+        throw err;
+      }
+    },
   },
 };

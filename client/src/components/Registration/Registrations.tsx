@@ -63,9 +63,13 @@ const Registration = (props) => {
   const handleSubmit = async (e) => {
     let values: Array<string> = Object.values(userInfo!);
 
-    const {
-      createCommunity: { id },
-    } = await fetchInfo(createCommunityMutation, [address]);
+    const communityResponse: Promise<any> = await fetchInfo(
+      createCommunityMutation,
+      [address]
+    );
+    // @ts-ignore
+    const id: string = communityResponse.data.createCommunity.id;
+
     values.push(image);
     values.push(id);
     const data: Promise<any> = await fetchInfo(createUserMutation, [...values]);

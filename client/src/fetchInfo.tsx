@@ -9,7 +9,8 @@ const fetchInfo = async (query: any, values: Array<any>): Promise<any> => {
       query: query(...values),
     }),
   });
-  const { data } = await body.json();
+  const data = await body.json();
+  console.log(data);
   return data;
 };
 export default fetchInfo;
