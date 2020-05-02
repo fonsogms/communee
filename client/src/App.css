@@ -67,3 +67,15 @@
   width: 2rem;
   height: 2rem;
 }
+.login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 30vh;
+}
+.login > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

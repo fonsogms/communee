@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Map from "./Map";
 import Mapbox from "./Mapbox";
 import ProfileForm from "./ProfileForm";
-import fetchInfo from "../fetchInfo";
+import fetchInfo from "../../fetchInfo";
 const createUserMutation = (
   name: string,
   email: string,
@@ -50,7 +50,7 @@ const createCommunityMutation = (address: string): string => {
   `;
 };
 
-const Registration = () => {
+const Registration = (props) => {
   const [showMap, setShowMap] = useState(true);
   const [userInfo, setUser] = useState({
     name: "",
@@ -61,7 +61,6 @@ const Registration = () => {
   const [image, setImage] = useState("");
   const [address, setAddress] = useState("");
   const handleSubmit = async (e) => {
-    e.preventDefault();
     let values: Array<string> = Object.values(userInfo!);
 
     const {
@@ -71,6 +70,7 @@ const Registration = () => {
     values.push(id);
     const data: Promise<any> = await fetchInfo(createUserMutation, [...values]);
     console.log(data);
+    props.history.push("/home");
   };
   console.log("this is the show map?", showMap);
   return (

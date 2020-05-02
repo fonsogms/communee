@@ -1,7 +1,8 @@
 import React from "react";
 import { useState } from "react";
 import Mapbox from "./Mapbox";
-import fetchInfo from "../fetchInfo";
+import fetchInfo from "../../fetchInfo";
+import { Link } from "react-router-dom";
 const createUserMutation = (
   name: string,
   email: string,
@@ -80,7 +81,7 @@ const ProfileForm = (props) => {
     <div>
       <button onClick={() => props.setShowMap(true)}>Go back</button>
 
-      <form className="registration" onSubmit={props.handleSubmit}>
+      <div className="registration">
         <div className="input">
           <div className="userInfo">
             {Object.keys(props.userInfo).map((elem) => {
@@ -117,8 +118,8 @@ const ProfileForm = (props) => {
           </div>
         </div>
 
-        <button type="submit">Submit</button>
-      </form>
+        <button onClick={props.handleSubmit}>Submit</button>
+      </div>
     </div>
   );
 };
