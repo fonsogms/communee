@@ -5,9 +5,8 @@ const getUserQuery = (email, password) => {
   return `
     mutation{
         login(email:"${email}",password:"${password}"){
-          name
-          community
-          profilePic
+            token
+          
         }
       }`;
 };
@@ -39,6 +38,7 @@ const Login = (props) => {
       setUserInput(values);
     } else {
       console.log(data.data.login);
+      props.history.push("/home");
     }
   };
 

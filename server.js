@@ -24,7 +24,9 @@ const resolvers = require("./resolvers");
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: () => {},
+  context: async (req) => {
+    console.log(req.req.headers);
+  },
 });
 server.applyMiddleware({ app, path: "/graphql" });
 //comentario random

@@ -40,7 +40,11 @@ module.exports.user = {
         if (!isPasswordValid) {
           throw new Error("Wrong password :(");
         }
-        return user;
+        const secret = process.env.JWT_SECRET_KEY || "mysecretkey";
+        const token = jwt.sign({ email: user.email }, secret, {
+          expiresIn: "1h",
+        });
+        return { token };
       } catch (err) {
         console.log(err);
         throw err;

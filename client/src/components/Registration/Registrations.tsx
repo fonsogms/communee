@@ -78,7 +78,7 @@ const Registration = (props) => {
   };
   console.log("this is the show map?", showMap);
   return (
-    <div>
+    <>
       <h2 className="title">Find your community and start sharing with them</h2>
       {showMap ? (
         <Mapbox
@@ -96,7 +96,7 @@ const Registration = (props) => {
           handleSubmit={handleSubmit}
         ></ProfileForm>
       )}
-    </div>
+    </>
   );
 };
 
