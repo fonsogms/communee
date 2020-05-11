@@ -38,6 +38,7 @@ const Login = (props) => {
       setUserInput(values);
     } else {
       console.log(data.data.login);
+      const token: string = data.data.login.token;
       props.history.push("/home");
     }
   };

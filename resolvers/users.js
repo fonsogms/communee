@@ -2,6 +2,7 @@ const User = require("../DB/models/User");
 const Community = require("../DB/models/Community");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { Response } = require("express");
 module.exports.user = {
   Query: {
     user: (parent, { name, email }, context, info) => {
@@ -29,7 +30,7 @@ module.exports.user = {
         throw error;
       }
     },
-    login: async (parent, { email, password }, context) => {
+    login: async (parent, { email, password }, { req, res }) => {
       try {
         const user = await User.findOne({ email });
         if (!user) {
@@ -43,6 +44,10 @@ module.exports.user = {
         const secret = process.env.JWT_SECRET_KEY || "mysecretkey";
         const token = jwt.sign({ email: user.email }, secret, {
           expiresIn: "1h",
+        });
+        res.cookie("jid", token, {
+          httpOnly: true,
+          path: "/refresh_token",
         });
         return { token };
       } catch (err) {

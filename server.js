@@ -13,7 +13,7 @@ connection();
 
 //Cors setup
 const cors = require("cors");
-app.use(cors({ origin: ["http://localhost:3000"] }));
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
 app.use(express.json());
 // APOLLO SERVER SETUP
@@ -21,14 +21,15 @@ app.use(express.json());
 //Requiring the typedefs and resolvers
 const typeDefs = require("./typeDefs");
 const resolvers = require("./resolvers");
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: async (req) => {
-    console.log(req.req.headers);
+  context: async ({ req, res }) => {
+    return { req, res };
   },
 });
-server.applyMiddleware({ app, path: "/graphql" });
+server.applyMiddleware({ app, path: "/graphql", cors: false });
 //comentario random
 
 app.listen(process.env.PORT, () => {
