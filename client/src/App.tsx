@@ -7,15 +7,12 @@ import "./App.css";
 import { Route, Switch } from "react-router-dom";
 import { useEffect } from "react";
 function App() {
-  console.log(process.env);
-  console.log(process.env.REACT_APP_SERVER_URL);
-  console.log(process.env.REACT_APP_SERVER_HELLO);
   useEffect(
     () =>
       fetch("http://localhost:4000/refresh_token", {
         method: "POST",
         credentials: "include",
-      }).then(async (x) => {
+      }).then((x) => {
         console.log(x);
       }),
     []
