@@ -7,15 +7,18 @@ import "./App.css";
 import { Route, Switch } from "react-router-dom";
 import { useEffect } from "react";
 function App() {
-  useEffect(
-    () =>
-      fetch("http://localhost:4000/refresh_token", {
-        method: "POST",
-        credentials: "include",
-      }).then((x) => {
-        console.log(x);
-      }),
-    []
+  useEffect(() =>
+    fetch("http://localhost:4000/refresh_token", {
+      method: "POST",
+      credentials: "include",
+    })
+      .then(async (body: any) => {
+        const data = await body.json();
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
   );
   return (
     <div className="App">

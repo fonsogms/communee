@@ -1,6 +1,6 @@
 const express = require("express");
 const User = require("./DB/models/User");
-const { verify } = require("jsonwebtoken");
+const { verify, sign } = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 app = express();
 const { ApolloServer } = require("apollo-server-express");
@@ -26,28 +26,34 @@ const typeDefs = require("./typeDefs");
 const resolvers = require("./resolvers");
 
 app.post("/refresh_token", async (req, res) => {
-  console.log("working");
-  console.log(req.cookies);
-  const token = req.cookies;
+  let token = req.cookies.jid;
   if (!token) {
     return res.send({ ok: false, accessToken: "" });
   }
   let payload = null;
   try {
+    console.log("working");
     payload = verify(token, process.env.JWT_SECRET_KEY || "mysecretkey");
     console.log(payload);
   } catch (err) {
+    console.log(err);
     return res.send({ ok: false, accessToken: "" });
   }
-  const user = await User.findOne({ id: payload.userId });
+  console.log("this is payload", payload);
+  const user = await User.findOne({ email: payload.email });
   if (!user) {
     return res.send({ ok: false, accessToken: "" });
   }
+  const secret = process.env.JWT_SECRET_KEY || "mysecretkey";
 
+  token = sign({ email: user.email }, secret, {
+    expiresIn: "1h",
+  });
   res.cookie("jid", token, {
     httpOnly: true,
     path: "/refresh_token",
   });
+  res.json({ token });
   /*
 
 
