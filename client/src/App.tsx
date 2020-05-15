@@ -4,6 +4,7 @@ import Registration from "./components/Registration/Registrations";
 import Navbar from "./components/Navbar";
 import Login from "./components/Login/Login";
 import "./App.css";
+import { refreshToken } from "./Token";
 import { Route, Switch } from "react-router-dom";
 import { useEffect } from "react";
 function App() {
@@ -15,6 +16,9 @@ function App() {
       .then(async (body: any) => {
         const data = await body.json();
         console.log(data);
+        if (data.token) {
+          refreshToken(data.token);
+        }
       })
       .catch((err) => {
         console.log(err);

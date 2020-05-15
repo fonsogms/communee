@@ -3,6 +3,7 @@ import Map from "./Map";
 import Mapbox from "./Mapbox";
 import ProfileForm from "./ProfileForm";
 import fetchInfo from "../../fetchInfo";
+import { getToken } from "../../Token";
 const createUserMutation = (
   name: string,
   email: string,
@@ -51,6 +52,8 @@ const createCommunityMutation = (address: string): string => {
 };
 
 const Registration = (props) => {
+  console.log("this is the token", getToken());
+
   const [showMap, setShowMap] = useState(true);
   const [userInfo, setUser] = useState({
     name: "",
