@@ -1,7 +1,7 @@
 const { gql } = require("apollo-server-express");
 module.exports.community = gql`
   extend type Query {
-    findCommunity(id: ID): Community!
+    findUserCommunity: Community
   }
   extend type Mutation {
     createCommunity(userInput: createCommunity): Community

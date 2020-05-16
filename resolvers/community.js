@@ -1,7 +1,15 @@
 const Community = require("../DB/models/Community");
+const { combineResolvers } = require("graphql-resolvers");
+const { isAuthenticated } = require("./middleware/index");
 module.exports.community = {
   Query: {
-    findCommunity: async (parent, args, context) => {},
+    findUserCommunity: combineResolvers(
+      isAuthenticated,
+      async (parent, args, { req: { userId } }) => {
+        console.log("find the user!", userId);
+        return { name: userId };
+      }
+    ),
   },
   Mutation: {
     createCommunity: async (

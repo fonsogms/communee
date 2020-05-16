@@ -2,6 +2,7 @@ const express = require("express");
 const User = require("./DB/models/User");
 const { verify, sign } = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
+const { verifyUser } = require("./helpers/context/index");
 app = express();
 const { ApolloServer } = require("apollo-server-express");
 //environment setup
@@ -16,7 +17,7 @@ connection();
 
 //Cors setup
 const cors = require("cors");
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(cors({ origin: ["http://localhost:3000"], credentials: true }));
 app.use(cookieParser());
 app.use(express.json());
 // APOLLO SERVER SETUP
@@ -34,12 +35,10 @@ app.post("/refresh_token", async (req, res) => {
   try {
     console.log("working");
     payload = verify(token, process.env.JWT_SECRET_KEY || "mysecretkey");
-    console.log(payload);
   } catch (err) {
     console.log(err);
     return res.send({ ok: false, accessToken: "" });
   }
-  console.log("this is payload", payload);
   const user = await User.findOne({ email: payload.email });
   if (!user) {
     return res.send({ ok: false, accessToken: "" });
@@ -74,12 +73,27 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: async ({ req, res }) => {
-    return { req, res };
+    const contextObj = {};
+    try {
+      if (req) {
+        await verifyUser(req);
+        contextObj.req = req;
+        console.log("this another user id", req.userId);
+        contextObj.res = res;
+      }
+      return contextObj;
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
   },
 });
 server.applyMiddleware({ app, path: "/graphql", cors: false });
 //comentario random
-
+app.post("/python", (req, res) => {
+  console.log(req.body);
+  res.json(req.body);
+});
 app.listen(process.env.PORT, () => {
   console.log(`Listening on port ${process.env.PORT}`);
 });

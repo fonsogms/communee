@@ -8,17 +8,15 @@ import { refreshToken } from "./Token";
 import { Route, Switch } from "react-router-dom";
 import { useEffect } from "react";
 function App() {
-  useEffect(() =>
+  useEffect(async () =>
     fetch("http://localhost:4000/refresh_token", {
       method: "POST",
       credentials: "include",
     })
-      .then(async (body: any) => {
+      .then(async (body) => {
         const data = await body.json();
-        console.log(data);
-        if (data.token) {
-          refreshToken(data.token);
-        }
+
+        refreshToken(data.token);
       })
       .catch((err) => {
         console.log(err);

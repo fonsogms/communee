@@ -30,7 +30,6 @@ const Login = (props) => {
   const handleLogin = async () => {
     const data = await fetchInfo(getUserQuery, [...Object.values(userInput)]);
     const { errors } = data;
-    console.log(errors);
     if (errors) {
       const errorMessage: string = data.errors[0].message;
       console.log(data.errors[0].message);

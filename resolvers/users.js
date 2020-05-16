@@ -3,6 +3,8 @@ const Community = require("../DB/models/Community");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { Response } = require("express");
+const { isAuthenticated } = require("./middleware/index");
+const { combinerResolvers } = require("graphql-resolvers");
 module.exports.user = {
   Query: {
     user: (parent, { name, email }, context, info) => {
@@ -30,7 +32,7 @@ module.exports.user = {
         throw error;
       }
     },
-    login: async (parent, { email, password }, { req, res }) => {
+    login: async (parent, { email, password }, { res }) => {
       try {
         const user = await User.findOne({ email });
         if (!user) {
