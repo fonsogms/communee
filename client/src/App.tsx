@@ -6,32 +6,42 @@ import Login from "./components/Login/Login";
 import "./App.css";
 import { refreshToken } from "./Token";
 import { Route, Switch } from "react-router-dom";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import Home from "./components/Home";
 function App() {
-  useEffect(async () =>
-    fetch("http://localhost:4000/refresh_token", {
-      method: "POST",
-      credentials: "include",
-    })
-      .then(async (body) => {
-        const data = await body.json();
+  const [loading, setLoading] = useState(true);
+  useEffect(
+    () =>
+      fetch("http://localhost:4000/refresh_token", {
+        method: "POST",
+        credentials: "include",
+      })
+        .then(async (body) => {
+          const data = await body.json();
+          refreshToken(data.token);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+        }),
 
-        refreshToken(data.token);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
+    []
   );
   return (
     <div className="App">
-      <Navbar></Navbar>
+      {loading ? null : (
+        <>
+          <Navbar></Navbar>
 
-      <Route
-        exact
-        path="/registration"
-        render={(props) => <Registration {...props} />}
-      />
-      <Route exact path="/login" render={(props) => <Login {...props} />} />
+          <Route
+            exact
+            path="/registration"
+            render={(props) => <Registration {...props} />}
+          />
+          <Route exact path="/login" render={(props) => <Login {...props} />} />
+          <Route exact path="/home" render={(props) => <Home {...props} />} />
+        </>
+      )}
     </div>
   );
 }

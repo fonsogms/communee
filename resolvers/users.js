@@ -4,12 +4,25 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { Response } = require("express");
 const { isAuthenticated } = require("./middleware/index");
-const { combinerResolvers } = require("graphql-resolvers");
+const { combineResolvers } = require("graphql-resolvers");
 module.exports.user = {
   Query: {
-    user: (parent, { name, email }, context, info) => {
-      return { name, email };
-    },
+    user: combineResolvers(
+      isAuthenticated,
+      async (parent, args, { req: { userId } }, info) => {
+        try {
+          const user = await User.findById(userId);
+          if (!user) {
+            throw new Error("Fecking el bruh no user found");
+          }
+
+          return user;
+        } catch (err) {
+          console.log(err);
+          throw err;
+        }
+      }
+    ),
   },
   Mutation: {
     createUser: async (parent, { userInput }, context, info) => {
