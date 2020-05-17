@@ -7,6 +7,7 @@ module.exports.user = gql`
     createUser(userInput: createUser): User
     updateUser(userInput: updateUser): User
     login(email: String, password: String): Token
+    logout: String
   }
   input createUser {
     name: String!

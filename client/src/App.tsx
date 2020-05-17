@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 import Home from "./components/Home";
 function App() {
   const [loading, setLoading] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
   useEffect(
     () =>
       fetch("http://localhost:4000/refresh_token", {
@@ -20,6 +21,9 @@ function App() {
           const data = await body.json();
           refreshToken(data.token);
           setLoading(false);
+          if (data.token) {
+            setLoggedIn(true);
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -31,14 +35,20 @@ function App() {
     <div className="App">
       {loading ? null : (
         <>
-          <Navbar></Navbar>
+          <Navbar loggedIn={loggedIn} setLoggedIn={setLoggedIn}></Navbar>
 
           <Route
             exact
             path="/registration"
-            render={(props) => <Registration {...props} />}
+            render={(props) => (
+              <Registration setLoggedIn={setLoggedIn} {...props} />
+            )}
           />
-          <Route exact path="/login" render={(props) => <Login {...props} />} />
+          <Route
+            exact
+            path="/login"
+            render={(props) => <Login setLoggedIn={setLoggedIn} {...props} />}
+          />
           <Route exact path="/home" render={(props) => <Home {...props} />} />
         </>
       )}

@@ -39,7 +39,7 @@ const Login = (props) => {
       console.log(data.data.login);
       const token: string = data.data.login.token;
       refreshToken(token);
-
+      props.setLoggedIn(true);
       props.history.push("/home");
     }
   };

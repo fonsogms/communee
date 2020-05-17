@@ -70,5 +70,12 @@ module.exports.user = {
         throw err;
       }
     },
+    logout: (parent, args, { res }) => {
+      res.cookie("jid", "", {
+        httpOnly: true,
+        path: "/refresh_token",
+      });
+      return " ";
+    },
   },
 };

@@ -77,6 +77,7 @@ const Registration = (props) => {
     values.push(id);
     const data: Promise<any> = await fetchInfo(createUserMutation, [...values]);
     console.log(data);
+    props.setLoggedIn(true);
     props.history.push("/home");
   };
   console.log("this is the show map?", showMap);
