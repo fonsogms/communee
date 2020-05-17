@@ -3,9 +3,15 @@ const User = require("../../DB/models/User");
 module.exports.verifyUser = async (req) => {
   req.email = null;
   req.userId = null;
-  const token = req.headers.authorization.split(" ")[1];
 
   try {
+    const bearer = req.headers.authorization;
+    console.log("this is the bearer", bearer);
+    let token = " ";
+    if (bearer) {
+      token = req.headers.authorization.split(" ")[1];
+    }
+    console.log(token);
     const payload = jwt.verify(
       token,
       process.env.JWT_SECRET_KEY || "mysecretkey"

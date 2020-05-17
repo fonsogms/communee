@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import fetchInfo from "../../fetchInfo";
-
+import { refreshToken } from "../../Token";
 const getUserQuery = (email, password) => {
   return `
     mutation{
@@ -38,6 +38,8 @@ const Login = (props) => {
     } else {
       console.log(data.data.login);
       const token: string = data.data.login.token;
+      refreshToken(token);
+
       props.history.push("/home");
     }
   };
