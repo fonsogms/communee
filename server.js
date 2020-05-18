@@ -89,11 +89,6 @@ const server = new ApolloServer({
   },
 });
 server.applyMiddleware({ app, path: "/graphql", cors: false });
-//comentario random
-app.post("/python", (req, res) => {
-  console.log(req.body);
-  res.json(req.body);
-});
 app.listen(process.env.PORT, () => {
   console.log(`Listening on port ${process.env.PORT}`);
 });

@@ -14,13 +14,14 @@ module.exports.post = gql`
     id: ID!
     title: String!
     description: String!
-    creator: User
+    creator: String
     Date: Date!
   }
   input createPost {
     title: String!
     description: String!
     creator: ID!
+    community: ID!
   }
   input updatePost {
     id: ID!

@@ -5,4 +5,5 @@ const customDateScalarResolver = {
 const { user } = require("./users");
 const { community } = require("./community");
 const { apis } = require("./extApis");
-module.exports = [user, community, apis, customDateScalarResolver];
+const { post } = require("./post");
+module.exports = [user, community, apis, customDateScalarResolver, post];

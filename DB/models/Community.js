@@ -28,7 +28,7 @@ const communitySchema = new mongoose.Schema(
         reference: "Giving",
       },
     ],
-    post: [
+    posts: [
       {
         type: mongoose.Schema.Types.ObjectId,
         reference: "Post",

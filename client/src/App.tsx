@@ -36,7 +36,7 @@ function App() {
       {loading ? null : (
         <>
           <Navbar loggedIn={loggedIn} setLoggedIn={setLoggedIn}></Navbar>
-
+          <h1>Where dreams come true</h1>
           <Route
             exact
             path="/registration"

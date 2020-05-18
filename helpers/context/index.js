@@ -6,12 +6,10 @@ module.exports.verifyUser = async (req) => {
 
   try {
     const bearer = req.headers.authorization;
-    console.log("this is the bearer", bearer);
     let token = " ";
     if (bearer) {
       token = req.headers.authorization.split(" ")[1];
     }
-    console.log(token);
     const payload = jwt.verify(
       token,
       process.env.JWT_SECRET_KEY || "mysecretkey"
@@ -20,10 +18,9 @@ module.exports.verifyUser = async (req) => {
       req.email = payload.email;
       const user = await User.findOne({ email: payload.email });
       req.userId = user._id;
-      console.log("this is user id:!", req.userId);
     }
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     //throw err;
   }
 };
