@@ -1,5 +1,5 @@
 import React from "react";
-import fetchInfo from "../fetchInfo";
+import fetchInfo from "../../fetchInfo";
 const getUserQuery = (): string => {
   return ` query{
         user{

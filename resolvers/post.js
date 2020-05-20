@@ -6,11 +6,22 @@ module.exports.post = {
   Mutation: {
     createPost: async (parent, { userInput }, context) => {
       //console.log(args);
-      const post = await Post.create(userInput);
-      const community = await Community.findByIdAndUpdate(userInput.community, {
-        $push: { posts: post },
-      });
-      return post;
+      try {
+        const post = await Post.create(userInput);
+        const community = await Community.findByIdAndUpdate(
+          userInput.community,
+          {
+            $push: { posts: post },
+          }
+        );
+        if (!community) {
+          throw new Error("Community not found");
+        }
+        return post;
+      } catch (err) {
+        console.log(err);
+        throw err;
+      }
     },
   },
 };

@@ -7,7 +7,7 @@ import "./App.css";
 import { refreshToken } from "./Token";
 import { Route, Switch } from "react-router-dom";
 import { useState, useEffect } from "react";
-import Home from "./components/Home";
+import Home from "./components/Home/Home";
 function App() {
   const [loading, setLoading] = useState(true);
   const [loggedIn, setLoggedIn] = useState(false);

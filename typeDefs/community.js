@@ -12,7 +12,7 @@ module.exports.community = gql`
     address: String!
     tenants: [User]
     events: [Event]
-    items: [Giving]
+    givings: [Giving]
     posts: [Post]
     Date: Date
   }
