@@ -1,5 +1,12 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import fetchInfo from "../../fetchInfo";
+import styled from "styled-components";
+import Posts from "./Posts";
+import Options from "./Options";
+const StyledDiv = styled.div`
+  display: flex;
+  justify-content: space-around;
+`;
 const getUserQuery = (): string => {
   return ` query{
         user{
@@ -14,12 +21,21 @@ const getUserQuery = (): string => {
 const getCommunityQuery = (id): string => {
   return `query{
     findCommunity(id:"${id}"){
-      address
+      posts{
+        id
+        title
+      }
     }
   }
           `;
 };
+
 const Home = (props) => {
+  const [posts, setPosts] = useState([]);
+  const [errors, setErrors] = useState("");
+  useEffect(() => {
+    getData();
+  }, []);
   const getData = async (): Promise<void> => {
     const userQuery = await fetchInfo(getUserQuery, []);
     const { errors } = userQuery;
@@ -27,6 +43,7 @@ const Home = (props) => {
     if (errors) {
       const errorMessage: string = userQuery.errors[0].message;
       console.log(errorMessage);
+      setErrors(errorMessage);
     } else {
       const {
         data: { user },
@@ -36,13 +53,29 @@ const Home = (props) => {
         const communityQuery = await fetchInfo(getCommunityQuery, [
           user.community,
         ]);
-        console.log(communityQuery);
+        if (communityQuery.errors) {
+          console.log(communityQuery.errors[0].message);
+          setErrors(communityQuery.errors[0].message);
+        } else {
+          console.log(communityQuery);
+          setPosts(communityQuery.data.findCommunity.posts);
+        }
       }
-      console.log(user);
     }
   };
-  getData();
-  return <div>Hello</div>;
+  console.log(posts);
+  return (
+    <div>
+      {errors ? (
+        <h1>{errors}</h1>
+      ) : (
+        <StyledDiv>
+          {posts.length && <Posts posts={posts}></Posts>}
+          <Options></Options>
+        </StyledDiv>
+      )}
+    </div>
+  );
 };
 
 export default Home;
