@@ -78,7 +78,7 @@ const server = new ApolloServer({
       if (req) {
         await verifyUser(req);
         contextObj.req = req;
-        console.log("this another user id", req.userId);
+        // console.log("this another user id", req.userId);
         contextObj.res = res;
       }
       return contextObj;

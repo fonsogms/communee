@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 const StyledPosts = styled.div`
   overflow: scroll;
@@ -11,7 +12,9 @@ const Posts = (props) => {
       {props.posts.map((elem) => {
         return (
           <>
-            <h3>{elem.title}.</h3>
+            <h3>
+              <Link to={`/post/${elem.id}`}>{elem.title}</Link>
+            </h3>
           </>
         );
       })}

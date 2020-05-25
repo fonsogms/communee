@@ -3,6 +3,7 @@ module.exports.user = gql`
   extend type Query {
     user(name: String, email: String, id: ID): User!
   }
+
   extend type Mutation {
     createUser(userInput: createUser): User
     updateUser(userInput: updateUser): User

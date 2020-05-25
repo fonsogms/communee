@@ -6,11 +6,14 @@ const Events = require("../DB/models/Events");
 const Givings = require("../DB/models/Giving");
 module.exports.community = {
   Query: {
-    findCommunity: async (parent, { id }, context) => {
-      console.log("find the user!");
-      const community = await Community.findOne({ _id: id });
-      return community;
-    },
+    findCommunity: combineResolvers(
+      isAuthenticated,
+      async (parent, { id }, context) => {
+        console.log("find the user!");
+        const community = await Community.findOne({ _id: id });
+        return community;
+      }
+    ),
   },
   Mutation: {
     createCommunity: async (
