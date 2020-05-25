@@ -7,6 +7,7 @@ import "./App.css";
 import { refreshToken } from "./Token";
 import { Route, Switch } from "react-router-dom";
 import { useState, useEffect } from "react";
+import Post from "./components/Post/Post";
 import Home from "./components/Home/Home";
 function App() {
   const [loading, setLoading] = useState(true);
@@ -36,7 +37,6 @@ function App() {
       {loading ? null : (
         <>
           <Navbar loggedIn={loggedIn} setLoggedIn={setLoggedIn}></Navbar>
-          <h1>Where dreams come true</h1>
           <Route
             exact
             path="/registration"
@@ -50,6 +50,11 @@ function App() {
             render={(props) => <Login setLoggedIn={setLoggedIn} {...props} />}
           />
           <Route exact path="/home" render={(props) => <Home {...props} />} />
+          <Route
+            exact
+            path="/post/:id"
+            render={(props) => <Post {...props} />}
+          ></Route>
         </>
       )}
     </div>

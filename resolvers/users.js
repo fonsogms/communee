@@ -15,7 +15,6 @@ module.exports.user = {
           if (!user) {
             throw new Error("Fecking el bruh no user found");
           }
-
           return user;
         } catch (err) {
           console.log(err);

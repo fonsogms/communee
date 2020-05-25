@@ -11,11 +11,11 @@ const Posts = (props) => {
     <StyledPosts>
       {props.posts.map((elem) => {
         return (
-          <>
+          <div key={elem.id}>
             <h3>
               <Link to={`/post/${elem.id}`}>{elem.title}</Link>
             </h3>
-          </>
+          </div>
         );
       })}
     </StyledPosts>

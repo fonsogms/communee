@@ -2,7 +2,7 @@ const { gql } = require("apollo-server-express");
 module.exports.post = gql`
   extend type Query {
     getPosts(communityId: ID!): [Post]
-    getPost(postId: ID!): Post
+    getPost(postId: ID!): GetPost
   }
 
   extend type Mutation {
@@ -14,8 +14,15 @@ module.exports.post = gql`
     id: ID!
     title: String!
     description: String!
-    creator: String
-    Date: Date!
+    creator: ID!
+    createdAt: Date!
+  }
+  type GetPost {
+    id: ID!
+    title: String!
+    description: String!
+    creator: User
+    createdAt: Date!
   }
   input createPost {
     title: String!
@@ -27,6 +34,5 @@ module.exports.post = gql`
     id: ID!
     title: String!
     description: String!
-    Date: Date
   }
 `;
