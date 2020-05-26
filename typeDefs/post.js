@@ -8,6 +8,7 @@ module.exports.post = gql`
   extend type Mutation {
     createPost(userInput: createPost): Post
     updatePost(userInput: updatePost): Post
+    deletePost(id: ID!): Post
   }
 
   type Post {

@@ -11,7 +11,7 @@ const ShowPost = (props) => {
       </div>
       <div>
         <button onClick={() => props.setEdit(true)}> Edit</button>
-        <button>Delete</button>
+        <button onClick={props.deletePost}>Delete</button>
       </div>
     </div>
   );

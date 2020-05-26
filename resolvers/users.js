@@ -57,7 +57,7 @@ module.exports.user = {
         }
         const secret = process.env.JWT_SECRET_KEY || "mysecretkey";
         const token = jwt.sign({ email: user.email }, secret, {
-          expiresIn: "1h",
+          expiresIn: "1d",
         });
         res.cookie("jid", token, {
           httpOnly: true,

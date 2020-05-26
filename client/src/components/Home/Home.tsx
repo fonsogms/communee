@@ -70,7 +70,7 @@ const Home = (props) => {
         <h1>{errors}</h1>
       ) : (
         <StyledDiv>
-          {posts.length && <Posts posts={posts}></Posts>}
+          {posts.length ? <Posts posts={posts}></Posts> : null}
           <Options></Options>
         </StyledDiv>
       )}

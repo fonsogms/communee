@@ -7,9 +7,10 @@ const editPostMutation = (
 ): string => {
   return `mutation{
         updatePost(userInput:{id:"${id}",title:"${title}",description:"${description}"}) {
-          title
-          description
-        }
+            title
+            description
+            }
+
       }`;
 };
 const EditPost = (props) => {
@@ -22,10 +23,21 @@ const EditPost = (props) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
   const saveData = async (): Promise<void> => {
+    console.log("this is props", props);
     const response = await fetchInfo(editPostMutation, [
-      props._id,
+      props.id,
       ...Object.values(input),
     ]);
+    const { errors } = response;
+    const { data } = response;
+    if (errors) {
+      const errorMessage: string = response.errors[0].message;
+      console.log(errorMessage);
+    } else {
+      const { updatePost } = data;
+      props.setPost({ ...props, ...updatePost });
+      props.setEdit(false);
+    }
     console.log(response);
   };
   return (
@@ -50,7 +62,7 @@ const EditPost = (props) => {
 
       <div>
         <button onClick={saveData}>Save</button>
-        <button>Delete</button>
+        <button onClick={props.deletePost}>Delete</button>
       </div>
     </div>
   );

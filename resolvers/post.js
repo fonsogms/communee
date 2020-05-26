@@ -46,23 +46,48 @@ module.exports.post = {
     ),
     updatePost: combineResolvers(
       isAuthenticated,
-      async (parent, { userInput }, context) => {
+      async (parent, { userInput }, { req }) => {
         try {
-          const post = await Post.findByIdAndUpdate(
-            userInput.id,
-            {
-              title: userInput.title,
-              description: userInput.description,
-            },
-            { new: true }
+          let post = await Post.findById(userInput.id);
+          if (post.creator.toString() == req.userId.toString()) {
+            post = await Post.findByIdAndUpdate(
+              userInput.id,
+              {
+                title: userInput.title,
+                description: userInput.description,
+              },
+              { new: true }
+            );
+            return post;
+          }
+          throw new Error(
+            "You are not the creator of this post, you cannot delete it"
           );
-          return post;
         } catch (err) {
           console.log(err);
           throw err;
         }
       }
     ),
+    deletePost: async (parent, { id }, { req }) => {
+      try {
+        const user = req.userId;
+        let post = await Post.findById(id);
+        if (!post) {
+          throw new Error("This post doesn't exist anymore");
+        }
+        if (post.creator.toString() == req.userId.toString()) {
+          post = await Post.findByIdAndDelete(id);
+          return post;
+        }
+        throw new Error(
+          "You are not the creator of this post, you cannot delete it"
+        );
+      } catch (err) {
+        console.log(err);
+        throw err;
+      }
+    },
   },
   GetPost: {
     creator: async ({ creator }) => {
@@ -71,7 +96,6 @@ module.exports.post = {
         if (!user) {
           return "Creator doesn't exist anymore";
         }
-        console.log(user);
         return user;
       } catch (err) {
         console.log(err);

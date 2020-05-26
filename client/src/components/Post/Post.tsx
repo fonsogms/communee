@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import fetchInfo from "../../fetchInfo";
 import EditPost from "./EditPost";
 import Showpost from "./ShowPost";
+
 const getPostQuery = (id: string): string => {
   return `query{
     getPost(postId:"${id}") {
@@ -10,13 +11,19 @@ const getPostQuery = (id: string): string => {
       description
       createdAt
       creator{
+          id
           name
       }
     }
   }`;
 };
-const deletePostMutation = {};
-const editPostMutation = {};
+const deletePostMutation = (id: string): string => {
+  return `mutation{
+    deletePost(id:"${id}"){
+      title
+    }
+  }`;
+};
 const Post = (props) => {
   const [post, setPost] = useState({});
   const [error, setError] = useState("");
@@ -41,14 +48,38 @@ const Post = (props) => {
       setPost(getPost);
     }
   };
+  const deletePost = async (): Promise<void> => {
+    const response = await fetchInfo(deletePostMutation, [id]);
+    const { errors } = response;
+    const { data } = response;
+    if (errors) {
+      const errorMessage: string = response.errors[0].message;
+      console.log(errorMessage);
+      setError(errorMessage);
+    } else {
+      props.history.push("/home");
+    }
+  };
   return (
     <div>
       {error ? (
         <h1>{error}</h1>
       ) : edit ? (
-        <EditPost {...post}></EditPost>
+        <EditPost
+          {...post}
+          id={id}
+          setPost={setPost}
+          setEdit={setEdit}
+          deletePost={deletePost}
+        ></EditPost>
       ) : (
-        post.title && <Showpost {...post} setEdit={setEdit}></Showpost>
+        post.title && (
+          <Showpost
+            {...post}
+            deletePost={deletePost}
+            setEdit={setEdit}
+          ></Showpost>
+        )
       )}
     </div>
   );
