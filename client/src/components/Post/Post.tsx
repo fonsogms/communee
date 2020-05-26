@@ -25,6 +25,7 @@ const deletePostMutation = (id: string): string => {
   }`;
 };
 const Post = (props) => {
+  console.log(props);
   const [post, setPost] = useState({});
   const [error, setError] = useState("");
   const [edit, setEdit] = useState(false);
@@ -78,6 +79,7 @@ const Post = (props) => {
             {...post}
             deletePost={deletePost}
             setEdit={setEdit}
+            userId={props.location.state.userId}
           ></Showpost>
         )
       )}

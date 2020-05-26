@@ -33,6 +33,7 @@ const getCommunityQuery = (id): string => {
 const Home = (props) => {
   const [posts, setPosts] = useState([]);
   const [errors, setErrors] = useState("");
+  const [userId, setUserId] = useState("");
   useEffect(() => {
     getData();
   }, []);
@@ -59,18 +60,20 @@ const Home = (props) => {
         } else {
           console.log(communityQuery);
           setPosts(communityQuery.data.findCommunity.posts);
+          setUserId(user.id);
         }
       }
     }
   };
   console.log(posts);
+  console.log(userId);
   return (
     <div>
       {errors ? (
         <h1>{errors}</h1>
       ) : (
         <StyledDiv>
-          {posts.length ? <Posts posts={posts}></Posts> : null}
+          {posts.length ? <Posts posts={posts} userId={userId}></Posts> : null}
           <Options></Options>
         </StyledDiv>
       )}
