@@ -25,10 +25,10 @@ module.exports.post = gql`
     creator: User
     createdAt: Date!
   }
+
   input createPost {
     title: String!
     description: String!
-    creator: ID!
     community: ID!
   }
   input updatePost {

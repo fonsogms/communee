@@ -24,9 +24,10 @@ module.exports.post = {
   Mutation: {
     createPost: combineResolvers(
       isAuthenticated,
-      async (parent, { userInput }, context) => {
+      async (parent, { userInput }, { req }) => {
         //console.log(args);
         try {
+          userInput.creator = req.userId;
           const post = await Post.create(userInput);
           const community = await Community.findByIdAndUpdate(
             userInput.community,

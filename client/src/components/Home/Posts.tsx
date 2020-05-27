@@ -41,7 +41,6 @@ const Posts = (props) => {
               <Link
                 to={{
                   pathname: `/post/${elem.id}`,
-                  state: { userId: props.userId },
                 }}
               >
                 {elem.title}

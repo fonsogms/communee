@@ -3,6 +3,7 @@ import fetchInfo from "../../fetchInfo";
 import EditPost from "./EditPost";
 import Showpost from "./ShowPost";
 import { getCommunityId } from "../../communityInfo";
+import { getUserId } from "../../userInfo";
 const getPostQuery = (id: string): string => {
   return `query{
     getPost(postId:"${id}") {
@@ -82,7 +83,7 @@ const Post = (props) => {
             {...post}
             deletePost={deletePost}
             setEdit={setEdit}
-            userId={props.location.state.userId}
+            userId={getUserId()}
           ></Showpost>
         )
       )}

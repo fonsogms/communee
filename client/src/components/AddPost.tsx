@@ -1,5 +1,19 @@
 import React from "react";
-
+import { getCommunityId } from "../communityInfo";
+import { getUserId } from "../userInfo";
+const createPostMutation = (
+  title: string,
+  description: string,
+  community: string
+): string => {
+  return `mutation{
+        createPost(userInput:{title:"${title}",description:"${description}",community:"${community}"}){
+          title
+          creator
+          
+        }
+      }`;
+};
 const AddPost = () => {
   return (
     <div>

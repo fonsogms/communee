@@ -5,6 +5,8 @@ import Posts from "./Posts";
 import { Link } from "react-router-dom";
 import Options from "./Options";
 import { refreshCommunityId } from "../../communityInfo";
+import { refreshUserId, getUserId } from "../../userInfo";
+
 const StyledDiv = styled.div`
   display: flex;
   justify-content: space-around;
@@ -54,6 +56,7 @@ const Home = (props) => {
       } = userQuery;
       console.log(user);
       if (user) {
+        refreshUserId(user.id);
         const communityQuery = await fetchInfo(getCommunityQuery, [
           user.community,
         ]);
@@ -66,7 +69,7 @@ const Home = (props) => {
           console.log(communityQuery);
           setPosts(communityQuery.data.findCommunity.posts);
           //should refactor this?
-          setUserId(user.id);
+          // setUserId(user.id);
         }
       }
     }
@@ -80,7 +83,11 @@ const Home = (props) => {
         <StyledDiv>
           <div>
             {posts.length ? (
-              <Posts posts={posts} setPosts={setPosts} userId={userId}></Posts>
+              <Posts
+                posts={posts}
+                setPosts={setPosts}
+                userId={getUserId()}
+              ></Posts>
             ) : null}
             <div>
               <button>
