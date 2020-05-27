@@ -36,7 +36,10 @@ module.exports.community = {
   },
   Community: {
     posts: async ({ posts }, args, context) => {
-      const postsDB = await Posts.find({ _id: { $in: [...posts] } });
+      const postsDB = await Posts.find({ _id: { $in: [...posts] } })
+        .sort({ updatedAt: -1 })
+        .exec();
+      console.log(postsDB);
       return postsDB;
       // const posts = await Posts.find({ comm });
     },
