@@ -1,9 +1,9 @@
-let s: string = "";
+let token: string = "";
 
 export let refreshToken = (newToken: string): void => {
-  s = newToken;
+  token = newToken;
 };
 
 export let getToken = (): string => {
-  return s;
+  return token;
 };

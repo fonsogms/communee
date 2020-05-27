@@ -1,5 +1,6 @@
 import React from "react";
 import Test from "./components/test";
+import AddPost from "./components/AddPost";
 import Registration from "./components/Registration/Registrations";
 import Navbar from "./components/Navbar";
 import Login from "./components/Login/Login";
@@ -54,6 +55,11 @@ function App() {
             exact
             path="/post/:id"
             render={(props) => <Post {...props} />}
+          ></Route>
+          <Route
+            exact
+            path="/add/post"
+            render={(props) => <AddPost {...props}></AddPost>}
           ></Route>
         </>
       )}

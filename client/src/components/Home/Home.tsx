@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import fetchInfo from "../../fetchInfo";
 import styled from "styled-components";
 import Posts from "./Posts";
+import { Link } from "react-router-dom";
 import Options from "./Options";
 const StyledDiv = styled.div`
   display: flex;
@@ -24,6 +25,7 @@ const getCommunityQuery = (id): string => {
       posts{
         id
         title
+        creator
       }
     }
   }
@@ -65,15 +67,27 @@ const Home = (props) => {
       }
     }
   };
-  console.log(posts);
-  console.log(userId);
+
   return (
     <div>
       {errors ? (
         <h1>{errors}</h1>
       ) : (
         <StyledDiv>
-          {posts.length ? <Posts posts={posts} userId={userId}></Posts> : null}
+          <div>
+            {posts.length ? (
+              <Posts posts={posts} setPosts={setPosts} userId={userId}></Posts>
+            ) : null}
+            <div>
+              <button>
+                <Link to={{ pathname: "/add/post", state: { communityId: 1 } }}>
+                  {" "}
+                  Add Post
+                </Link>
+              </button>
+            </div>
+          </div>
+
           <Options></Options>
         </StyledDiv>
       )}
