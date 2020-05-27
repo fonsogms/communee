@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Posts from "./Posts";
 import { Link } from "react-router-dom";
 import Options from "./Options";
+import { refreshCommunityId } from "../../communityInfo";
 const StyledDiv = styled.div`
   display: flex;
   justify-content: space-around;
@@ -56,12 +57,15 @@ const Home = (props) => {
         const communityQuery = await fetchInfo(getCommunityQuery, [
           user.community,
         ]);
+
         if (communityQuery.errors) {
           console.log(communityQuery.errors[0].message);
           setErrors(communityQuery.errors[0].message);
         } else {
+          refreshCommunityId(user.community);
           console.log(communityQuery);
           setPosts(communityQuery.data.findCommunity.posts);
+          //should refactor this?
           setUserId(user.id);
         }
       }
@@ -80,10 +84,7 @@ const Home = (props) => {
             ) : null}
             <div>
               <button>
-                <Link to={{ pathname: "/add/post", state: { communityId: 1 } }}>
-                  {" "}
-                  Add Post
-                </Link>
+                <Link to={{ pathname: "/add/post" }}> Add Post</Link>
               </button>
             </div>
           </div>

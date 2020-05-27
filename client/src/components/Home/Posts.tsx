@@ -2,21 +2,25 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import fetchInfo from "../../fetchInfo";
+import { getCommunityId } from "../../communityInfo";
 const StyledPosts = styled.div`
   overflow: scroll;
   width: 50vh;
   height: 40vh;
 `;
-const deletePostMutation = (id: string): string => {
+const deletePostMutation = (id: string, communityId: string): string => {
   return `mutation{
-    deletePost(id:"${id}"){
+    deletePost(id:"${id}",communityId:"${communityId}"){
       title
     }
   }`;
 };
 const Posts = (props) => {
   const deletePost = async (id): Promise<void> => {
-    const response = await fetchInfo(deletePostMutation, [id]);
+    const response = await fetchInfo(deletePostMutation, [
+      id,
+      getCommunityId(),
+    ]);
     const { errors } = response;
     if (errors) {
       const errorMessage: string = response.errors[0].message;

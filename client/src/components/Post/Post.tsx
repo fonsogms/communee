@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import fetchInfo from "../../fetchInfo";
 import EditPost from "./EditPost";
 import Showpost from "./ShowPost";
-
+import { getCommunityId } from "../../communityInfo";
 const getPostQuery = (id: string): string => {
   return `query{
     getPost(postId:"${id}") {
@@ -17,9 +17,9 @@ const getPostQuery = (id: string): string => {
     }
   }`;
 };
-const deletePostMutation = (id: string): string => {
+const deletePostMutation = (id: string, communityId: string): string => {
   return `mutation{
-    deletePost(id:"${id}"){
+    deletePost(id:"${id}",communityId:"${communityId}"){
       title
     }
   }`;
@@ -50,7 +50,10 @@ const Post = (props) => {
     }
   };
   const deletePost = async (): Promise<void> => {
-    const response = await fetchInfo(deletePostMutation, [id]);
+    const response = await fetchInfo(deletePostMutation, [
+      id,
+      getCommunityId(),
+    ]);
     const { errors } = response;
     const { data } = response;
     if (errors) {

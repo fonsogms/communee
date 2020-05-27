@@ -69,7 +69,7 @@ module.exports.post = {
         }
       }
     ),
-    deletePost: async (parent, { id }, { req }) => {
+    deletePost: async (parent, { id, communityId }, { req }) => {
       try {
         const user = req.userId;
         let post = await Post.findById(id);
@@ -78,6 +78,10 @@ module.exports.post = {
         }
         if (post.creator.toString() == req.userId.toString()) {
           post = await Post.findByIdAndDelete(id);
+          const community = await Community.findByIdAndUpdate(communityId, {
+            $pull: { posts: id },
+          });
+
           return post;
         }
         throw new Error(
