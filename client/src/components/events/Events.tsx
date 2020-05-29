@@ -28,6 +28,13 @@ const findCommunityQuery = (id: string): string => {
     }
   }`;
 };
+const deleteEventMutation = (id: string, communityId: string): string => {
+  return `mutation{
+    deleteEvent(id:"${id}",communityId:"${communityId}"){
+      title
+    }
+  }`;
+};
 const Events = (props) => {
   const [events, setEvents] = useState([]);
   const [errors, setErrors] = useState("");
@@ -64,7 +71,22 @@ const Events = (props) => {
       }
     }
   };
-
+  const deleteEvent = async (id: string): Promise<void> => {
+    const response = await fetchInfo(deleteEventMutation, [
+      id,
+      getCommunityId(),
+    ]);
+    const { errors } = response;
+    if (errors) {
+      const errorMessage: string = response.errors[0].message;
+      console.log(errorMessage);
+    } else {
+      let filteredEvents = events.filter((elem) => {
+        return elem.id !== id;
+      });
+      setEvents(filteredEvents);
+    }
+  };
   return (
     <div>
       {errors ? (
@@ -85,7 +107,9 @@ const Events = (props) => {
                   </div>
                   <p>Where: {elem.where}</p>
                 </Link>
-                {getUserId() == elem.organizer ? <button>Delete</button> : null}
+                {getUserId() == elem.organizer ? (
+                  <button onClick={() => deleteEvent(elem.id)}>Delete</button>
+                ) : null}
               </div>
             );
           })}

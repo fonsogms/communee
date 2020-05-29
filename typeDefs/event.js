@@ -2,6 +2,7 @@ const { gql } = require("apollo-server-express");
 module.exports.event = gql`
   extend type Mutation {
     createEvent(userInput: eventInput): Event
+    deleteEvent(id: ID!, communityId: ID!): Event
   }
   input eventInput {
     date: String

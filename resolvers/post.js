@@ -70,29 +70,32 @@ module.exports.post = {
         }
       }
     ),
-    deletePost: async (parent, { id, communityId }, { req }) => {
-      try {
-        const user = req.userId;
-        let post = await Post.findById(id);
-        if (!post) {
-          throw new Error("This post doesn't exist anymore");
-        }
-        if (post.creator.toString() == req.userId.toString()) {
-          post = await Post.findByIdAndDelete(id);
-          const community = await Community.findByIdAndUpdate(communityId, {
-            $pull: { posts: id },
-          });
+    deletePost: combineResolvers(
+      isAuthenticated,
+      async (parent, { id, communityId }, { req }) => {
+        try {
+          const user = req.userId;
+          let post = await Post.findById(id);
+          if (!post) {
+            throw new Error("This post doesn't exist anymore");
+          }
+          if (post.creator.toString() == req.userId.toString()) {
+            post = await Post.findByIdAndDelete(id);
+            const community = await Community.findByIdAndUpdate(communityId, {
+              $pull: { posts: id },
+            });
 
-          return post;
+            return post;
+          }
+          throw new Error(
+            "You are not the creator of this post, you cannot delete it"
+          );
+        } catch (err) {
+          console.log(err);
+          throw err;
         }
-        throw new Error(
-          "You are not the creator of this post, you cannot delete it"
-        );
-      } catch (err) {
-        console.log(err);
-        throw err;
       }
-    },
+    ),
   },
   GetPost: {
     creator: async ({ creator }) => {
