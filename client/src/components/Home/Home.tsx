@@ -38,7 +38,6 @@ const getCommunityQuery = (id): string => {
 const Home = (props) => {
   const [posts, setPosts] = useState([]);
   const [errors, setErrors] = useState("");
-  const [userId, setUserId] = useState("");
   useEffect(() => {
     getData();
   }, []);

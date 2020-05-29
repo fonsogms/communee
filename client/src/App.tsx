@@ -1,4 +1,5 @@
 import React from "react";
+import Events from "./components/events/Events";
 import Test from "./components/test";
 import AddPost from "./components/AddPost";
 import Registration from "./components/Registration/Registrations";
@@ -60,6 +61,11 @@ function App() {
             exact
             path="/add/post"
             render={(props) => <AddPost {...props}></AddPost>}
+          ></Route>
+          <Route
+            exact
+            path="/events"
+            render={(props) => <Events {...props}></Events>}
           ></Route>
         </>
       )}

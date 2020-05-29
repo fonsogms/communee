@@ -5,8 +5,9 @@ import fetchInfo from "../../fetchInfo";
 import { getCommunityId } from "../../communityInfo";
 const StyledPosts = styled.div`
   overflow: scroll;
-  width: 50vh;
+  width: 100vh;
   height: 40vh;
+  border-style: solid;
 `;
 const deletePostMutation = (id: string, communityId: string): string => {
   return `mutation{
