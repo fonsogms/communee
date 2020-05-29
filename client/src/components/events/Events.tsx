@@ -1,15 +1,29 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import fetchInfo from "../../fetchInfo";
-import { getCommunityId } from "../../communityInfo";
+import { getCommunityId, refreshCommunityId } from "../../communityInfo";
+import { getUserId, refreshUserId } from "../../userInfo";
+const getUserQuery = (): string => {
+  return ` query{
+          user{
+            name
+            community
+            id
+              
+          
+          }
+        }`;
+};
 const findCommunityQuery = (id: string): string => {
   return `{
     findCommunity(id:"${id}"){
+        id
       events{
         id
-        description
         title
         where 
         date
+        organizer
       }
     }
   }`;
@@ -21,17 +35,36 @@ const Events = (props) => {
     getData();
   }, []);
   const getData = async (): Promise<void> => {
-    const response = await fetchInfo(findCommunityQuery, [getCommunityId()]);
-    const { errors } = response;
-    const { data } = response;
+    const userQuery = await fetchInfo(getUserQuery, []);
+    const { errors } = userQuery;
+
     if (errors) {
-      const errorMessage: string = errors[0].message;
+      const errorMessage: string = userQuery.errors[0].message;
+      console.log(errorMessage);
       setErrors(errorMessage);
     } else {
-      const { findCommunity } = data;
-      setEvents(findCommunity.events);
+      const {
+        data: { user },
+      } = userQuery;
+      console.log(user);
+      if (user) {
+        refreshUserId(user.id);
+        const communityQuery = await fetchInfo(findCommunityQuery, [
+          user.community,
+        ]);
+
+        if (communityQuery.errors) {
+          console.log(communityQuery.errors[0].message);
+          setErrors(communityQuery.errors[0].message);
+        } else {
+          refreshCommunityId(user.community);
+          console.log(communityQuery);
+          setEvents(communityQuery.data.findCommunity.events);
+        }
+      }
     }
   };
+
   return (
     <div>
       {errors ? (
@@ -42,12 +75,17 @@ const Events = (props) => {
             let date = new Date(elem.date);
             return (
               <div>
-                <div>
-                  {" "}
-                  <h2>{elem.title}</h2>
-                  <h5>Where: {elem.where}</h5>
-                </div>
-                <p>Date: {date.toDateString()}</p>
+                <Link
+                  to={`/event/${elem.id}`}
+                  style={{ textDecoration: "none", color: "Black" }}
+                >
+                  <div>
+                    <h2>{elem.title}</h2>
+                    <h5> When: {date.toDateString()}</h5>
+                  </div>
+                  <p>Where: {elem.where}</p>
+                </Link>
+                {getUserId() == elem.organizer ? <button>Delete</button> : null}
               </div>
             );
           })}

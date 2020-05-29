@@ -11,12 +11,13 @@ module.exports.community = {
       isAuthenticated,
       async (parent, { id }, { req }) => {
         try {
-          if (!id) {
+          /*  if (!id) {
             const user = await User.findById(req.userId);
             id = user.community;
-          }
+          } */
           console.log("find the user!");
           const community = await Community.findOne({ _id: id });
+          console.log(community);
           return community;
         } catch (err) {
           console.log(err);
@@ -55,6 +56,7 @@ module.exports.community = {
     },
     events: async ({ events }, args, context) => {
       const eventsDB = await Events.find({ _id: { $in: [...events] } });
+      console.log(eventsDB);
       return eventsDB;
     },
     givings: async ({ givings }, args, context) => {

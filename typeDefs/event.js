@@ -17,7 +17,7 @@ module.exports.event = gql`
     title: String!
     description: String!
     where: String!
-    organizer: User!
+    organizer: ID!
     participants: [User]
   }
 `;
