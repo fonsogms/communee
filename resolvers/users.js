@@ -24,7 +24,7 @@ module.exports.user = {
     ),
   },
   Mutation: {
-    createUser: async (parent, { userInput }, context, info) => {
+    createUser: async (parent, { userInput }, { req, res }, info) => {
       try {
         console.log("this is userInput", userInput);
         const hashedPassword = await bcrypt.hash(userInput.password, 12);
@@ -35,6 +35,15 @@ module.exports.user = {
         });
         if (user) {
           console.log("this is user", user.community);
+          const secret = process.env.JWT_SECRET_KEY || "mysecretkey";
+          const token = jwt.sign({ email: user.email }, secret, {
+            expiresIn: "1d",
+          });
+          console.log(token);
+          res.cookie("jid", token, {
+            httpOnly: true,
+            path: "/refresh_token",
+          });
           return user;
         } else {
           throw new Error("There was a prooblem creating user");

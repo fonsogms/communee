@@ -14,26 +14,23 @@ import Home from "./components/Home/Home";
 function App() {
   const [loading, setLoading] = useState(true);
   const [loggedIn, setLoggedIn] = useState(false);
-  useEffect(
-    () =>
-      fetch("http://localhost:4000/refresh_token", {
-        method: "POST",
-        credentials: "include",
+  useEffect(() => {
+    fetch("http://localhost:4000/refresh_token", {
+      method: "POST",
+      credentials: "include",
+    })
+      .then(async (body) => {
+        const data = await body.json();
+        refreshToken(data.token);
+        setLoading(false);
+        if (data.token) {
+          setLoggedIn(true);
+        }
       })
-        .then(async (body) => {
-          const data = await body.json();
-          refreshToken(data.token);
-          setLoading(false);
-          if (data.token) {
-            setLoggedIn(true);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        }),
-
-    []
-  );
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
   return (
     <div className="App">
       {loading ? null : (

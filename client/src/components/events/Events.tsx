@@ -81,7 +81,7 @@ const Events = (props) => {
       const errorMessage: string = response.errors[0].message;
       console.log(errorMessage);
     } else {
-      let filteredEvents = events.filter((elem) => {
+      let filteredEvents = events.filter((elem: any) => {
         return elem.id !== id;
       });
       setEvents(filteredEvents);
@@ -93,7 +93,7 @@ const Events = (props) => {
         <h1>{errors}</h1>
       ) : (
         <ul>
-          {events.map((elem) => {
+          {events.map((elem: any) => {
             let date = new Date(elem.date);
             return (
               <div>

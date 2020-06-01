@@ -27,10 +27,12 @@ const deletePostMutation = (id: string, communityId: string): string => {
 };
 const Post = (props) => {
   console.log(props);
-  const [post, setPost] = useState({});
+
+  const [post, setPost] = useState({
+    title: "",
+  });
   const [error, setError] = useState("");
   const [edit, setEdit] = useState(false);
-
   const { id }: { id: string } = props.match.params;
   console.log(id);
   useEffect(() => {
