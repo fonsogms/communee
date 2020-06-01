@@ -3,7 +3,23 @@ const Community = require("../DB/models/Community");
 const { isAuthenticated } = require("./middleware/index");
 const { combineResolvers } = require("graphql-resolvers");
 module.exports.event = {
-  Query: {},
+  Query: {
+    getEvent: combineResolvers(
+      isAuthenticated,
+      async (parent, { id }, context) => {
+        try {
+          const event = await Event.findById(id);
+          if (!event) {
+            throw new Error("This event doesn't exist anymore");
+          }
+          return event;
+        } catch (err) {
+          console.log(err);
+          throw err;
+        }
+      }
+    ),
+  },
   Mutation: {
     createEvent: combineResolvers(
       isAuthenticated,
@@ -27,6 +43,31 @@ module.exports.event = {
         }
       }
     ),
+    updatePost: combineResolvers(
+      isAuthenticated,
+      async (parent, { userInput }, { req }) => {
+        try {
+          let event = await Event.findById(userInput.id);
+          if (event.creator.toString() == req.userId.toString()) {
+            event = await Event.findByIdAndUpdate(
+              userInput.id,
+              {
+                title: userInput.title,
+                description: userInput.description,
+              },
+              { new: true }
+            );
+            return event;
+          }
+          throw new Error(
+            "You are not the creator of this event, you cannot delete it"
+          );
+        } catch (err) {
+          console.log(err);
+          throw err;
+        }
+      }
+    ),
     deleteEvent: combineResolvers(
       isAuthenticated,
       async (parent, { id, communityId }, { req }) => {
@@ -45,7 +86,7 @@ module.exports.event = {
             return event;
           }
           throw new Error(
-            "You are not the creator of this post, you cannot delete it"
+            "You are not the creator of this event, you cannot delete it"
           );
         } catch (err) {
           console.log(err);
