@@ -44,6 +44,14 @@ const AddEvent = (props) => {
       ...Object.values(input),
       getCommunityId(),
     ]);
+    const { errors } = response;
+    const { data } = response;
+    if (errors) {
+      const errorMessage: string = errors[0].message;
+      console.log(errorMessage);
+    } else {
+      props.history.push("/events");
+    }
     console.log(response);
   };
   console.log(input);

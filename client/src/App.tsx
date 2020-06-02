@@ -37,9 +37,11 @@ function App() {
       .then(async (body) => {
         const data = await body.json();
         refreshToken(data.token);
+
         if (data.token) {
           const userQuery = await fetchInfo(getUserQuery, []);
           const { errors } = userQuery;
+          setLoading(false);
 
           if (errors) {
             const errorMessage: string = userQuery.errors[0].message;
@@ -58,6 +60,8 @@ function App() {
               // setUserId(user.id);
             }
           }
+        } else {
+          setLoading(false);
         }
       })
       .catch((err) => {

@@ -3,17 +3,7 @@ import { Link } from "react-router-dom";
 import fetchInfo from "../../fetchInfo";
 import { getCommunityId, refreshCommunityId } from "../../communityInfo";
 import { getUserId, refreshUserId } from "../../userInfo";
-const getUserQuery = (): string => {
-  return ` query{
-          user{
-            name
-            community
-            id
-              
-          
-          }
-        }`;
-};
+
 const findCommunityQuery = (id: string): string => {
   return `{
     findCommunity(id:"${id}"){
@@ -41,6 +31,7 @@ const Events = (props) => {
   useEffect(() => {
     getData();
   }, []);
+
   const getData = async (): Promise<void> => {
     const communityQuery = await fetchInfo(findCommunityQuery, [
       getCommunityId(),
