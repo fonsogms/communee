@@ -42,33 +42,16 @@ const Events = (props) => {
     getData();
   }, []);
   const getData = async (): Promise<void> => {
-    const userQuery = await fetchInfo(getUserQuery, []);
-    const { errors } = userQuery;
+    const communityQuery = await fetchInfo(findCommunityQuery, [
+      getCommunityId(),
+    ]);
 
-    if (errors) {
-      const errorMessage: string = userQuery.errors[0].message;
-      console.log(errorMessage);
-      setErrors(errorMessage);
+    if (communityQuery.errors) {
+      console.log(communityQuery.errors[0].message);
+      setErrors(communityQuery.errors[0].message);
     } else {
-      const {
-        data: { user },
-      } = userQuery;
-      console.log(user);
-      if (user) {
-        refreshUserId(user.id);
-        const communityQuery = await fetchInfo(findCommunityQuery, [
-          user.community,
-        ]);
-
-        if (communityQuery.errors) {
-          console.log(communityQuery.errors[0].message);
-          setErrors(communityQuery.errors[0].message);
-        } else {
-          refreshCommunityId(user.community);
-          console.log(communityQuery);
-          setEvents(communityQuery.data.findCommunity.events);
-        }
-      }
+      console.log(communityQuery);
+      setEvents(communityQuery.data.findCommunity.events);
     }
   };
   const deleteEvent = async (id: string): Promise<void> => {
@@ -115,6 +98,9 @@ const Events = (props) => {
           })}
         </ul>
       )}
+      <button>
+        <Link to="/event/add">Add Event</Link>
+      </button>
     </div>
   );
 };

@@ -48,6 +48,7 @@ module.exports.post = {
     updatePost: combineResolvers(
       isAuthenticated,
       async (parent, { userInput }, { req }) => {
+        console.log(userInput);
         try {
           let post = await Post.findById(userInput.id);
           if (post.creator.toString() == req.userId.toString()) {

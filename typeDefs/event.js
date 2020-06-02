@@ -12,7 +12,6 @@ module.exports.event = gql`
     title: String!
     description: String!
     where: String!
-    organizer: String!
     community: ID!
   }
   type Event {

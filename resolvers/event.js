@@ -43,31 +43,6 @@ module.exports.event = {
         }
       }
     ),
-    updatePost: combineResolvers(
-      isAuthenticated,
-      async (parent, { userInput }, { req }) => {
-        try {
-          let event = await Event.findById(userInput.id);
-          if (event.creator.toString() == req.userId.toString()) {
-            event = await Event.findByIdAndUpdate(
-              userInput.id,
-              {
-                title: userInput.title,
-                description: userInput.description,
-              },
-              { new: true }
-            );
-            return event;
-          }
-          throw new Error(
-            "You are not the creator of this event, you cannot delete it"
-          );
-        } catch (err) {
-          console.log(err);
-          throw err;
-        }
-      }
-    ),
     deleteEvent: combineResolvers(
       isAuthenticated,
       async (parent, { id, communityId }, { req }) => {
