@@ -25,7 +25,7 @@ app.use(express.json());
 //Requiring the typedefs and resolvers
 const typeDefs = require("./typeDefs");
 const resolvers = require("./resolvers");
-
+//secure cookie path setup
 app.post("/refresh_token", async (req, res) => {
   let token = req.cookies.jid;
   if (!token) {
@@ -69,6 +69,8 @@ app.post("/refresh_token", async (req, res) => {
 
   return res.send({ ok: true, accessToken: createAccessToken(user) }); */
 });
+
+//setting up apollo server
 const server = new ApolloServer({
   typeDefs,
   resolvers,
@@ -88,6 +90,7 @@ const server = new ApolloServer({
     }
   },
 });
+//apollo server config, cors to false to be able to use our own cors
 server.applyMiddleware({ app, path: "/graphql", cors: false });
 app.listen(process.env.PORT, () => {
   console.log(`Listening on port ${process.env.PORT}`);

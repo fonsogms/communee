@@ -2,7 +2,6 @@ const User = require("../DB/models/User");
 const Community = require("../DB/models/Community");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { Response } = require("express");
 const { isAuthenticated } = require("./middleware/index");
 const { combineResolvers } = require("graphql-resolvers");
 module.exports.user = {
